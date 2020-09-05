@@ -5,14 +5,14 @@ const router = koaRouter();
 
 function addMapping(router, mapping) {
   mapping.forEach(item => {
-    let method = (item.method === 'DELETE') ? 'del' : item.method.toLowerCase()
-    router[method](item.path, item.func)
-  })
+    let method = item.method === 'DELETE' ? 'del' : item.method.toLowerCase();
+    router[method](item.path, item.func);
+  });
 }
 
 function addControllers(router, dir) {
   var files = fs.readdirSync(__dirname + '/' + dir);
-  var js_files = files.filter((f) => {
+  var js_files = files.filter(f => {
     return f.endsWith('.js');
   });
 
@@ -22,8 +22,8 @@ function addControllers(router, dir) {
   }
 }
 
-module.exports = function (dir) {
-    let _dir = dir || 'modules'; // 如果不传参数，扫描目录默认为'module'
-    addControllers(router, _dir);
-    return router.routes();
+module.exports = function(dir) {
+  let _dir = dir || 'modules'; // 如果不传参数，扫描目录默认为'module'
+  addControllers(router, _dir);
+  return router.routes();
 };
