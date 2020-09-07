@@ -207,12 +207,12 @@ export default {
       const fileChunkList = this.createFileChunk(this.container.file);
 
       // 计算全量 hash
-      this.container.hash = await this.calculateHash(fileChunkList);
-      /*if (!window.requestIdleCallback) {
+      // this.container.hash = await this.calculateHash(fileChunkList);
+      if (!window.requestIdleCallback) {
         this.container.hash = await this.calculateHash(fileChunkList);
       } else {
         this.container.hash = await this.calculateHashIdle(fileChunkList);
-      }*/
+      }
 
       /**
        * 【验证是否文件已上传了】
@@ -301,12 +301,13 @@ export default {
         const loadNext = async (deadline) => {
           if (count < fileChunkList.length && deadline.timeRemaining() > 1) {
             await appendToSpark(fileChunkList[count].file);
+            console.log(this.hashPercentage, count, fileChunkList.length);
             if (count === fileChunkList.length - 1) {
               this.hashPercentage = 100;
               resolve(spark.end()); // 结束 ArrayBuffer 流，获取计算后的文件 md5
             } else {
               this.hashPercentage += chunkProportion;
-              window.requestIdleCallback(loadNext);
+              window.requestIdleCallback(loadNext, { timeout: 1000 });
             }
             count++;
           }
