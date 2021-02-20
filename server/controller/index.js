@@ -83,6 +83,7 @@ export const handleFormData = async ctx => {
   });
 
   return new Promise(resolve => {
+    // multipart Api https://www.npmjs.com/package/multiparty
     multipart.parse(req, async (err, fields, files) => {
       // 模拟报错
       if (Math.random() < 0.2) {

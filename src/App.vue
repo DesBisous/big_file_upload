@@ -235,7 +235,7 @@ export default {
           !uploadedList ||
           uploadedList.includes(this.container.hash + "-" + index)
             ? 100
-            : 0, // 已上传的切片进度直接为 100
+            : 0, // 已上传的切片进度直接为 100，这里的 !uploadedList 表示文件已存在了，切片数组所以没有，那切片进度直接 100
       }));
       this.status = Status.uploading;
       await this.uploadChunks(uploadedList);
@@ -391,6 +391,7 @@ export default {
        * 已上传的切片数量 + 本次上传的切片数量 = 所有切片数量时
        * uploadedList.length + requestList.length === this.fileChunkList.length
        * 合并切片
+       * ( 这里的 sucFileChunkCount 指的 uploadedList.length + requestList.length )
        */
       if (sucFileChunkCount === this.fileChunkList.length) {
         const data = await this.mergeRequest();
@@ -490,6 +491,7 @@ export default {
     // 用闭包保存每个 chunk 的进度数据
     createProgressHandler(item) {
       return (e) => {
+        // e.loaded  已传输的数据量、e.total  总共的数据量
         item.percentage = parseInt(String((e.loaded / e.total) * 100));
       };
     },

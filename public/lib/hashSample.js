@@ -36,5 +36,6 @@ self.onmessage = e => {
       percentage: 100,
       hash: spark.end(), // 结束 ArrayBuffer 流，获取计算后的文件 md5
     });
+    self.close(); // 关闭 worker 线程，线程如果不关闭，则会一直在后台运行着，
   };
 };
