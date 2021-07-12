@@ -19,7 +19,7 @@ self.onmessage = e => {
     if (cur + offset >= size) {
       fileChunkList.push(file.slice(cur, size));
     } else {
-      const mid = (cur + offset) / 2;
+      const mid = cur + offset / 2;
       const end = cur + offset;
       fileChunkList.push(file.slice(cur, cur + 2));
       fileChunkList.push(file.slice(mid, mid + 2));
